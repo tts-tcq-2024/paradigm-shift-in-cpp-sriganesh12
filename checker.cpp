@@ -1,15 +1,8 @@
 #include <assert.h>
 #include <iostream>
 #include "parameters.h"
+#include "statusEnum.h"
 using namespace std;
-
-enum class Status {
-    NO_BREACH,
-    LOW_BREACH,
-    HIGH_BREACH,
-    LOW_WARNING,
-    HIGH_WARNING
-};
 
 bool isInRange(Status status)
 {
