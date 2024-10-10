@@ -13,6 +13,6 @@ float warningTolerance = 0.05;
 bool warningForTemperature = true;
 bool warningForStateOfCharge = true;
 bool warningForChargeRate = true;
-}
+};
 
 #endif
