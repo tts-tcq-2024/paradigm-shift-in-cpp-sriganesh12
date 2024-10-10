@@ -90,6 +90,30 @@ bool isChargeRateInRange(float chargeRate, Status& ChargeRateStatus)
   returnIsInRange(ChargeRateStatus);
 }
 
+string getMessage(const string& parameter, Status status) {
+    switch (status) 
+    {
+        case status::LOW_WARNING:
+            return "Warning: " + parameter + " is approaching lower threshold.";
+        case status::HIGH_WARNING:
+            return "Warning: " + parameter + " is approaching peak threshold.";
+        case status::LOW_BREACH:
+            return "Breached: " + parameter + " is exceeding lower threshold.";
+        case status::HIGH_BREACH:
+            return "Warning: " + parameter + " is exceeding peak threshold.";
+        default:
+            return "";
+    }
+}
+
+string statusToMessageTranslation(const string& parameter, Status status) {
+    string message = getMessage(parameter, status);
+    if (message.empty()) {
+        message = parameter + " is normal.";
+    }
+    return message;
+}
+
 bool batteryIsOk(float temperature, float soc, float chargeRate)
 {
   Status TemperatureStatus = Status::NO_BREACH; 
@@ -99,6 +123,10 @@ bool batteryIsOk(float temperature, float soc, float chargeRate)
   bool isTemperatureOk{isTemperatureInRange(temperature, TemperatureStatus)};
   bool isStateOfChargeOk{isStateOfChargeInRange(soc, SOCStatus)};
   bool isChargeRateOk{isChargeRateInRange(chargeRate, ChargeRateStatus)};
+
+ std::cout << statusToMessageTranslation("Temperature",TemperatureStatus) << std::endl;
+ std::cout << statusToMessageTranslation("State of Charge", SOCStatus) << std::endl;
+ std::cout << statusToMessageTranslation("Charge Rate", ChargeRateStatus) << std::endl;
 
   return isTemperatureOk && isStateOfChargeOk && isChargeRateOk;
 }
