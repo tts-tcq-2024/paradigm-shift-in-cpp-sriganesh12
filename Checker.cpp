@@ -146,11 +146,11 @@ bool batteryIsOk(float temperature, float soc, float chargeRate)
 
 int main()
 {
-    EXPECT_TRUE(batteryIsOk(28, 74, 0.6)); // All Parameters in Range
-    EXPECT_FALSE(batteryIsOk(48, 83, 0.4)); // Temperature Breach
-    EXPECT_FALSE(batteryIsOk(-5, 52, 0.6)); // Temperature Breach
-    EXPECT_FALSE(batteryIsOk(30, 10, 0.5)); // Soc Breach
-    EXPECT_FALSE(batteryIsOk(25, 60, 0.85)); // Charge rate Breach
-    EXPECT_TRUE(batteryIsOk(43, 76, 0.6)); // All Params in Range(Temperature and Soc in warning stage)
-    EXPECT_TRUE(batteryIsOk(2, 22, 0.78)); // All Params in Range(Temperature, Soc and ChargeRate in Warning Stage)
+    assert(batteryIsOk(28, 74, 0.6) == true); // All Parameters in Range
+    assert(batteryIsOk(48, 83, 0.4) == false); // Temperature Breach
+    assert(batteryIsOk(-5, 52, 0.6) == false); // Temperature Breach
+    assert(batteryIsOk(30, 10, 0.5) == false); // Soc Breach
+    assert(batteryIsOk(25, 60, 0.85) == false); // Charge rate Breach
+    assert(batteryIsOk(43, 76, 0.6) == true); // All Params in Range(Temperature and Soc in warning stage)
+    assert(batteryIsOk(2, 22, 0.78) == true); // All Params in Range(Temperature, Soc and ChargeRate in Warning Stage)
 }
