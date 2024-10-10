@@ -1,3 +1,4 @@
+#include <gtest/gtest.h>
 #include "Checker.cpp"
 
 TEST(BatteryCheckTest, Temperature) {
