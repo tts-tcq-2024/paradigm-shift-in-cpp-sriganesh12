@@ -11,35 +11,35 @@ enum class Status {
     HIGH_WARNING
 };
 
-void UpdateWarningLimit(float value, float max, float min, Status& status)
+void UpdateHighWarningLimit(float value, float max, Status& status)
 {
   if(value > max)
   {
     status = Status::HIGH_WARNING;
   }
-  else if(value < min)
+}
+
+void UpdateLowWarningLimit(float value, float min, Status& status)
+{
+  if(value < min)
   {
     status = Status::LOW_WARNING;
   }
-  else
-  {
-    //DO NOTHING
-  }
 }
 
-void UpdateBreachLimit(float value, float max, float min, Status& status)
+void UpdateHighBreachLimit(float value, float max, Status& status)
 {
   if(value > max)
   {
     status = Status::HIGH_BREACH;
   }
-  else if(value < min)
+}
+
+void UpdateLowBreachLimit(float value, float min, Status& status)
+{
+  if(value < min)
   {
     status = Status::LOW_BREACH;
-  }
-  else
-  {
-    //DO NOTHING
   }
 }
 
@@ -50,9 +50,11 @@ bool isTemperatureInRange(float temp, Status& TemperatureStatus)
   {
     float MaxWarning = Thresholds.temperatureMax - Thresholds.warningTolerance*Thresholds.temperatureMax;
     float MinWarning = Thresholds.temperatureMin + Thresholds.warningTolerance*Thresholds.temperatureMax;
-    UpdateWarningLimit(temp, MaxWarning, MinWarning, TemperatureStatus);
+    UpdateHighWarningLimit(temp, MaxWarning, TemperatureStatus);
+    UpdateLowWarningLimit(temp, MinWarning, TemperatureStatus);
   }
-  UpdateBreachLimit(temp, Thresholds.temperatureMax, Thresholds.temperatureMin, TemperatureStatus); 
+  UpdateHighBreachLimit(temp, Thresholds.temperatureMax, TemperatureStatus);
+  UpdateLowBreachLimit(temp, Thresholds.temperatureMin, TemperatureStatus);
   return (TemperatureStatus==Status::NO_BREACH || TemperatureStatus==Status::HIGH_WARNING || TemperatureStatus==Status::LOW_WARNING);
 }
 
@@ -63,23 +65,24 @@ bool isStateOfChargeInRange(float soc, Status& SOCStatus)
   {
     float MaxWarning = Thresholds.StateOfChargeMax - Thresholds.warningTolerance*Thresholds.StateOfChargeMax;
     float MinWarning = Thresholds.StateOfChargeMin + Thresholds.warningTolerance*Thresholds.StateOfChargeMax;
-    UpdateWarningLimit(soc, MaxWarning, MinWarning, SOCStatus);
+    UpdateHighWarningLimit(soc, MaxWarning, SOCStatus);
+    UpdateLowWarningLimit(soc, MinWarning, SOCStatus);
   }
-  UpdateBreachLimit(soc, Thresholds.StateOfChargeMax, Thresholds.StateOfChargeMin, SOCStatus); 
+  UpdateHighBreachLimit(soc, Thresholds.StateOfChargeMax, SOCStatus);
+  UpdateLowBreachLimit(soc, Thresholds.StateOfChargeMin, SOCStatus);
   return (SOCStatus==Status::NO_BREACH || SOCStatus==Status::HIGH_WARNING || SOCStatus==Status::LOW_WARNING);
 }
 
-bool isChargeRateInRange(float chargeRate, Status& SOCStatus)
+bool isChargeRateInRange(float chargeRate, Status& ChargeRateStatus)
 {
   parameters Thresholds;
   if (Thresholds.warningForChargeRate)
   {
     float MaxWarning = Thresholds.ChargeRateMax - Thresholds.warningTolerance*Thresholds.ChargeRateMax;
-    float MinWarning = Thresholds.ChargeRateMin + Thresholds.warningTolerance*Thresholds.ChargeRateMax;
-    UpdateWarningLimit(chargeRate, MaxWarning, MinWarning, SOCStatus);
+    UpdateHighWarningLimit(chargeRate, MaxWarning, ChargeRateStatus);
   }
-  UpdateBreachLimit(chargeRate, Thresholds.ChargeRateMax, Thresholds.ChargeRateMin, SOCStatus); 
-  return (SOCStatus==Status::NO_BREACH || SOCStatus==Status::HIGH_WARNING || SOCStatus==Status::LOW_WARNING);
+  UpdateHighBreachLimit(chargeRate, Thresholds.ChargeRateMax, ChargeRateStatus); 
+  return (ChargeRateStatus==Status::NO_BREACH || ChargeRateStatus==Status::HIGH_WARNING);
 }
 
 bool batteryIsOk(float temperature, float soc, float chargeRate)
