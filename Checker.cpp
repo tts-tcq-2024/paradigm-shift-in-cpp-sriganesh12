@@ -11,7 +11,7 @@ enum class Status {
     HIGH_WARNING
 };
 
-bool returnIsInRange(Status status)
+bool isInRange(Status status)
 {
     return (status==Status::NO_BREACH || status==Status::HIGH_WARNING || status==Status::LOW_WARNING);
 }
@@ -60,7 +60,7 @@ bool isTemperatureInRange(float temp, Status& TemperatureStatus)
   }
   UpdateHighBreachLimit(temp, Thresholds.temperatureMax, TemperatureStatus);
   UpdateLowBreachLimit(temp, Thresholds.temperatureMin, TemperatureStatus);
-  returnIsInRange(TemperatureStatus);
+  return isInRange(TemperatureStatus);
 }
 
 bool isStateOfChargeInRange(float soc, Status& SOCStatus)
@@ -75,7 +75,7 @@ bool isStateOfChargeInRange(float soc, Status& SOCStatus)
   }
   UpdateHighBreachLimit(soc, Thresholds.StateOfChargeMax, SOCStatus);
   UpdateLowBreachLimit(soc, Thresholds.StateOfChargeMin, SOCStatus);
-  returnIsInRange(SOCStatus);
+  return isInRange(SOCStatus);
 }
 
 bool isChargeRateInRange(float chargeRate, Status& ChargeRateStatus)
@@ -87,7 +87,7 @@ bool isChargeRateInRange(float chargeRate, Status& ChargeRateStatus)
     UpdateHighWarningLimit(chargeRate, MaxWarning, ChargeRateStatus);
   }
   UpdateHighBreachLimit(chargeRate, Thresholds.ChargeRateMax, ChargeRateStatus); 
-  returnIsInRange(ChargeRateStatus);
+  return isInRange(ChargeRateStatus);
 }
 
 string getWarningMessage(const string& parameter, Status status) {
