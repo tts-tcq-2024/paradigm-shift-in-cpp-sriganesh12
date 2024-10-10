@@ -90,16 +90,24 @@ bool isChargeRateInRange(float chargeRate, Status& ChargeRateStatus)
   returnIsInRange(ChargeRateStatus);
 }
 
-string getMessage(const string& parameter, Status status) {
+string getWarningMessage(const string& parameter, Status status) {
     switch (status) 
     {
-        case status::LOW_WARNING:
+        case Status::LOW_WARNING:
             return "Warning: " + parameter + " is approaching lower threshold.";
-        case status::HIGH_WARNING:
+        case Status::HIGH_WARNING:
             return "Warning: " + parameter + " is approaching peak threshold.";
-        case status::LOW_BREACH:
+        default:
+            return "";
+    }
+}
+
+string getBreachMessage(const string& parameter, Status status) {
+    switch (status) 
+    {
+        case Status::LOW_BREACH:
             return "Breached: " + parameter + " is exceeding lower threshold.";
-        case status::HIGH_BREACH:
+        case Status::HIGH_BREACH:
             return "Warning: " + parameter + " is exceeding peak threshold.";
         default:
             return "";
@@ -107,8 +115,13 @@ string getMessage(const string& parameter, Status status) {
 }
 
 string statusToMessageTranslation(const string& parameter, Status status) {
-    string message = getMessage(parameter, status);
-    if (message.empty()) {
+    string message = getWarningMessage(parameter, status);
+    if (message.empty())
+    {
+        message = getBreachMessage(parameter, status);
+    }
+    if (message.empty())
+    {
         message = parameter + " is normal.";
     }
     return message;
