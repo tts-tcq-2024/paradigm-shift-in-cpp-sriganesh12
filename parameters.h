@@ -1,7 +1,7 @@
 #ifndef PARAMETERS_H
 #define PARAMETERS_H
 
-struct parameters
+struct Parameters
 {
 float MaxLimit;
 float MinLimit;
