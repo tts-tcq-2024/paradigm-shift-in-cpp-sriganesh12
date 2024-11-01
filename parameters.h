@@ -3,8 +3,8 @@
 
 struct Parameters
 {
-float MaxLimit;
-float MinLimit;
+float maxLimit;
+float minLimit;
 float warningTolerance = 0.05;
 bool warningEnabled = true;
 };
